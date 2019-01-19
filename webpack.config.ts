@@ -1,5 +1,6 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
+import * as nodeExternals from 'webpack-node-externals';
 
 let config: webpack.Configuration = {
   entry: [
@@ -28,6 +29,7 @@ let config: webpack.Configuration = {
     ],
   },
   target: 'node',
+  externals: [nodeExternals()],
 };
 
 export default config;
