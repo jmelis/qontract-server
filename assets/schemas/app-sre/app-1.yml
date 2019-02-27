@@ -11,10 +11,10 @@ properties:
     - /app-sre/app-1.yml
   labels:
     "$ref": "/common-1.json#/definitions/labels"
-
-  title:
+  name:
     type: string
-
+  description:
+    type: string
   serviceOwner:
     description: Team or individual who is/are responsible for the running instance of the software.
     type: object
@@ -43,43 +43,26 @@ properties:
     required:
     - SLO
 
-  dependencies:
+  codeRepositories:
     type: array
     items:
       type: object
       additionalProperties: false
       properties:
-        name:
+        url:
           type: string
-        statefulness:
+          format: uri-reference
+        description:
           type: string
-          enum:
-          - Durable
-          - Cache
-          - Stateless
-        opsModel:
-          type: string
-          enum:
-          - Hosted
-          - External
-        statusPage:
-          type: string
-          format: uri
-        SLA:
-          "$ref": "/common-1.json#/definitions/serviceLevel"
-        dependencyFailureImpact:
-          type: string
-          enum:
-          - No Impact
-          - Partial Outage
-          - Major Outage
-          - Complete Outage
       required:
-      - name
-      - statefulness
-      - opsModel
-      - SLA
-      - dependencyFailureImpact
+      - url
+      - description
+
+  dependencies:
+    type: array
+    items:
+      "$ref": "/common-1.json#/definitions/crossref"
+      "$schemaRef": "/dependencies/service-1.yml"
 
   quayRepos:
     type: array
@@ -111,7 +94,10 @@ properties:
       - items
 
 required:
-- title
+- $schema
+- labels
+- name
+- description
 - serviceOwner
-- "$schema"
-- "labels"
+- performanceParameters
+- codeRepositories
